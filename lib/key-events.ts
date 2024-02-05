@@ -7,9 +7,14 @@ export const handleCopy = (canvas: fabric.Canvas) => {
   const activeObjects = canvas.getActiveObjects();
   if (activeObjects.length > 0) {
     // Serialize the selected objects
-    const serializedObjects = activeObjects.map((obj) => obj.toObject());
+    const serializedObjects = activeObjects.map((obj) =>
+      obj.toObject()
+    );
     // Store the serialized objects in the clipboard
-    localStorage.setItem("clipboard", JSON.stringify(serializedObjects));
+    localStorage.setItem(
+      "clipboard",
+      JSON.stringify(serializedObjects)
+    );
   }
 
   return activeObjects;
@@ -20,7 +25,9 @@ export const handlePaste = (
   syncShapeInStorage: (shape: fabric.Object) => void
 ) => {
   if (!canvas || !(canvas instanceof fabric.Canvas)) {
-    console.error("Invalid canvas object. Aborting paste operation.");
+    console.error(
+      "Invalid canvas object. Aborting paste operation."
+    );
     return;
   }
 
@@ -66,11 +73,13 @@ export const handleDelete = (
   if (!activeObjects || activeObjects.length === 0) return;
 
   if (activeObjects.length > 0) {
-    activeObjects.forEach((obj: CustomFabricObject<any>) => {
-      if (!obj.objectId) return;
-      canvas.remove(obj);
-      deleteShapeFromStorage(obj.objectId);
-    });
+    activeObjects.forEach(
+      (obj: CustomFabricObject<any>) => {
+        if (!obj.objectId) return;
+        canvas.remove(obj);
+        deleteShapeFromStorage(obj.objectId);
+      }
+    );
   }
 
   canvas.discardActiveObject();
