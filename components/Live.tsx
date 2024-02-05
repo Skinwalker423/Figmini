@@ -26,6 +26,20 @@ const Live = () => {
     [cursor]
   );
 
+  const handlePointerDown = useCallback(
+    (event: React.PointerEvent) => {
+      const x =
+        event.clientX -
+        event.currentTarget.getBoundingClientRect().x;
+      const y =
+        event.clientY -
+        event.currentTarget.getBoundingClientRect().y;
+
+      updateMyPresence({ cursor: { x, y } });
+    },
+    [cursor]
+  );
+
   const handlePointerLeave = useCallback(
     (event: React.PointerEvent) => {
       event.preventDefault();
@@ -36,7 +50,13 @@ const Live = () => {
   );
 
   return (
-    <div>
+    <div
+      className='h-[100vh] w-full flex justify-center items-center text-center'
+      onPointerMove={handlePointerMove}
+      onPointerDown={handlePointerDown}
+      onPointerLeave={handlePointerLeave}
+    >
+      <h1 className='text-2xl text-white'>Figmini</h1>;
       <LiveCursors others={others} />
     </div>
   );
