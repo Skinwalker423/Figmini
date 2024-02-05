@@ -3,12 +3,18 @@ import {
   useOthers,
 } from "@/liveblocks.config";
 import LiveCursors from "./cursor/LiveCursors";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import CursorChat from "./cursor/CursorChat";
+import { CursorMode, CursorState } from "@/types/type";
 
 const Live = () => {
   const others = useOthers();
   const [{ cursor }, updateMyPresence] =
     useMyPresence() as any;
+  const [cursorState, setCursorState] =
+    useState<CursorState>({
+      mode: CursorMode.Hidden,
+    });
 
   const handlePointerMove = useCallback(
     (event: React.PointerEvent) => {
@@ -23,7 +29,7 @@ const Live = () => {
 
       updateMyPresence({ cursor: { x, y } });
     },
-    [cursor]
+    []
   );
 
   const handlePointerDown = useCallback(
@@ -37,13 +43,12 @@ const Live = () => {
 
       updateMyPresence({ cursor: { x, y } });
     },
-    [cursor]
+    []
   );
 
   const handlePointerLeave = useCallback(
     (event: React.PointerEvent) => {
-      event.preventDefault();
-
+      setCursorState({ mode: CursorMode.Hidden });
       updateMyPresence({ cursor: null, message: null });
     },
     []
@@ -57,6 +62,14 @@ const Live = () => {
       onPointerLeave={handlePointerLeave}
     >
       <h1 className='text-2xl text-white'>Figmini</h1>;
+      {cursor && (
+        <CursorChat
+          cursor={cursor}
+          cursorState={cursorState}
+          setCursorState={setCursorState}
+          updateMyPresence={updateMyPresence}
+        />
+      )}
       <LiveCursors others={others} />
     </div>
   );
