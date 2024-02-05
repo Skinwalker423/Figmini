@@ -1,3 +1,7 @@
 export default function Home() {
-  return <h1 className='text-5xl text-white'>Figmini</h1>;
+  return (
+    <div className='h-[100vh] w-full flex justify-center items-center text-center'>
+      <h1 className='text-2xl text-white'>Figmini</h1>;
+    </div>
+  );
 }
