@@ -7,6 +7,37 @@ const CursorChat = ({
   setCursorState,
   updateMyPresence,
 }: CursorChatProps) => {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    const message = e.target.value;
+    updateMyPresence({ message });
+    setCursorState({
+      mode: CursorMode.Chat,
+      message,
+      previousMessage: null,
+    });
+  }
+
+  function handleKeyDown(
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) {
+    if (e.key === "enter") {
+      setCursorState({
+        mode: CursorMode.Chat,
+        previousMessage:
+          cursorState.mode === CursorMode.Chat
+            ? cursorState.message
+            : "",
+        message: "",
+      });
+    } else if (e.key === "esc") {
+      setCursorState({
+        mode: CursorMode.Hidden,
+      });
+    }
+  }
+
   return (
     <div
       className='absolute top-0 left-0'
@@ -25,7 +56,15 @@ const CursorChat = ({
               type='text'
               className='z-10 w-60 border-none outline-none bg-transparent text-white placeholder-blue-300 '
               autoFocus={true}
-              placeholder='Type Something'
+              placeholder={
+                cursorState.previousMessage
+                  ? ""
+                  : "Type a message"
+              }
+              onChange={handleChange}
+              onKeyDown={handleKeyDown}
+              value={cursorState.message}
+              maxLength={50}
             />
           </div>
         </>
