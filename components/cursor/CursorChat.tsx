@@ -31,7 +31,7 @@ const CursorChat = ({
             : "",
         message: "",
       });
-    } else if (e.key === "esc") {
+    } else if (e.key === "Escape") {
       setCursorState({
         mode: CursorMode.Hidden,
       });
