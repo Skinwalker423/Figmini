@@ -22,7 +22,8 @@ const CursorChat = ({
   function handleKeyDown(
     e: React.KeyboardEvent<HTMLInputElement>
   ) {
-    if (e.key === "enter") {
+    console.log("enter", e.key);
+    if (e.key === "Enter") {
       setCursorState({
         mode: CursorMode.Chat,
         previousMessage:
