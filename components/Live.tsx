@@ -3,7 +3,7 @@ import {
   useOthers,
 } from "@/liveblocks.config";
 import LiveCursors from "./cursor/LiveCursors";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CursorChat from "./cursor/CursorChat";
 import { CursorMode, CursorState } from "@/types/type";
 
@@ -53,6 +53,24 @@ const Live = () => {
     },
     []
   );
+
+  useEffect(() => {
+    const onKeyUp = (e: React.KeyboardEvent) => {
+      if (e.key === "/") {
+        setCursorState({
+          mode: CursorMode.Chat,
+          previousMessage: null,
+          message: "",
+        });
+      } else if (e.key === "esc") {
+        updateMyPresence({ message: "" });
+        setCursorState({
+          mode: CursorMode.Hidden,
+        });
+      }
+    };
+    const onKeyDown = (e: React.KeyboardEvent) => {};
+  }, []);
 
   return (
     <div
