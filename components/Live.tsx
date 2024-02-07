@@ -30,14 +30,6 @@ const Live = () => {
     []
   );
 
-  const setReaction = useCallback((reaction: string) => {
-    setCursorState({
-      mode: CursorMode.Reaction,
-      reaction,
-      isPressed: false,
-    });
-  }, []);
-
   // Remove reactions that are not visible anymore (every 1 sec)
   useInterval(() => {
     setReactions((reactions) =>
@@ -104,9 +96,8 @@ const Live = () => {
           ? { ...state, isPressed: true }
           : state
       );
-      console.log("reactions", reactions);
     },
-    []
+    [cursorState.mode, setCursorState]
   );
 
   const handlePointerLeave = useCallback(
@@ -124,7 +115,7 @@ const Live = () => {
           : state
       );
     },
-    []
+    [cursorState.mode, setCursorState]
   );
 
   useEffect(() => {
@@ -174,6 +165,17 @@ const Live = () => {
     );
   });
 
+  const setReactionsOptimized = useCallback(
+    (reaction: string) => {
+      setCursorState({
+        mode: CursorMode.Reaction,
+        reaction,
+        isPressed: false,
+      });
+    },
+    []
+  );
+
   return (
     <div
       className='h-[100vh] w-full flex justify-center items-center text-center'
@@ -205,16 +207,14 @@ const Live = () => {
           {cursorState.mode ===
             CursorMode.ReactionSelector && (
             <ReactionSelector
-              setReaction={(reaction) => {
-                setReaction(reaction);
-              }}
+              setReaction={setReactionsOptimized}
             />
           )}
-          {cursorState.mode === CursorMode.Reaction && (
+          {/* {cursorState.mode === CursorMode.Reaction && (
             <div className='pointer-events-none absolute top-3.5 left-1 select-none'>
               {cursorState.reaction}
             </div>
-          )}
+          )} */}
         </>
       )}
       <LiveCursors others={others} />
