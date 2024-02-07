@@ -14,6 +14,8 @@ import {
   ReactionEvent,
 } from "@/types/type";
 import useInterval from "@/hooks/useInterval";
+import ReactionSelector from "./reaction/ReactionSelector";
+import FlyingReaction from "./reaction/FlyingReaction";
 
 const Live = () => {
   const others = useOthers();
@@ -71,14 +73,18 @@ const Live = () => {
     (event: React.PointerEvent) => {
       event.preventDefault();
 
-      const x =
-        event.clientX -
-        event.currentTarget.getBoundingClientRect().x;
-      const y =
-        event.clientY -
-        event.currentTarget.getBoundingClientRect().y;
-
-      updateMyPresence({ cursor: { x, y } });
+      if (
+        cursor == null ||
+        cursorState.mode !== CursorMode.ReactionSelector
+      ) {
+        const x =
+          event.clientX -
+          event.currentTarget.getBoundingClientRect().x;
+        const y =
+          event.clientY -
+          event.currentTarget.getBoundingClientRect().y;
+        updateMyPresence({ cursor: { x, y } });
+      }
     },
     []
   );
@@ -93,6 +99,12 @@ const Live = () => {
         event.currentTarget.getBoundingClientRect().y;
 
       updateMyPresence({ cursor: { x, y } });
+      setCursorState((state) =>
+        state.mode === CursorMode.Reaction
+          ? { ...state, isPressed: true }
+          : state
+      );
+      console.log("reactions", reactions);
     },
     []
   );
@@ -101,6 +113,16 @@ const Live = () => {
     (event: React.PointerEvent) => {
       setCursorState({ mode: CursorMode.Hidden });
       updateMyPresence({ cursor: null, message: null });
+    },
+    []
+  );
+  const handleOnPointerUp = useCallback(
+    (event: React.PointerEvent) => {
+      setCursorState((state) =>
+        state.mode === CursorMode.Reaction
+          ? { ...state, isPressed: false }
+          : state
+      );
     },
     []
   );
@@ -158,15 +180,42 @@ const Live = () => {
       onPointerMove={handlePointerMove}
       onPointerDown={handlePointerDown}
       onPointerLeave={handlePointerLeave}
+      onPointerUp={handleOnPointerUp}
     >
       <h1 className='text-2xl text-white'>Figmini</h1>;
+      {reactions.map((reaction) => {
+        return (
+          <FlyingReaction
+            key={reaction.timestamp.toString()}
+            x={reaction.point.x}
+            y={reaction.point.y}
+            timestamp={reaction.timestamp}
+            value={reaction.value}
+          />
+        );
+      })}
       {cursor && (
-        <CursorChat
-          cursor={cursor}
-          cursorState={cursorState}
-          setCursorState={setCursorState}
-          updateMyPresence={updateMyPresence}
-        />
+        <>
+          <CursorChat
+            cursor={cursor}
+            cursorState={cursorState}
+            setCursorState={setCursorState}
+            updateMyPresence={updateMyPresence}
+          />
+          {cursorState.mode ===
+            CursorMode.ReactionSelector && (
+            <ReactionSelector
+              setReaction={(reaction) => {
+                setReaction(reaction);
+              }}
+            />
+          )}
+          {cursorState.mode === CursorMode.Reaction && (
+            <div className='pointer-events-none absolute top-3.5 left-1 select-none'>
+              {cursorState.reaction}
+            </div>
+          )}
+        </>
       )}
       <LiveCursors others={others} />
     </div>

@@ -17,9 +17,10 @@ export default function ReactionSelector({
       }}
       onPointerMove={(e) => e.stopPropagation()}
     >
-      {REACTIONS.map(({ emoji }) => {
+      {REACTIONS.map(({ emoji, label }) => {
         return (
           <ReactionButton
+            key={label}
             reaction={emoji}
             onSelect={setReaction}
           />
