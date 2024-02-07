@@ -1,4 +1,10 @@
-export const COLORS = ["#DC2626", "#D97706", "#059669", "#7C3AED", "#DB2777"];
+export const COLORS = [
+  "#DC2626",
+  "#D97706",
+  "#059669",
+  "#7C3AED",
+  "#DB2777",
+];
 
 export const shapeElements = [
   {
@@ -73,8 +79,16 @@ export const defaultNavElement = {
 };
 
 export const directionOptions = [
-  { label: "Bring to Front", value: "front", icon: "/assets/front.svg" },
-  { label: "Send to Back", value: "back", icon: "/assets/back.svg" },
+  {
+    label: "Bring to Front",
+    value: "front",
+    icon: "/assets/front.svg",
+  },
+  {
+    label: "Send to Back",
+    value: "back",
+    icon: "/assets/back.svg",
+  },
 ];
 
 export const fontFamilyOptions = [
@@ -159,20 +173,36 @@ export const fontWeightOptions = [
 ];
 
 export const alignmentOptions = [
-  { value: "left", label: "Align Left", icon: "/assets/align-left.svg" },
+  {
+    value: "left",
+    label: "Align Left",
+    icon: "/assets/align-left.svg",
+  },
   {
     value: "horizontalCenter",
     label: "Align Horizontal Center",
     icon: "/assets/align-horizontal-center.svg",
   },
-  { value: "right", label: "Align Right", icon: "/assets/align-right.svg" },
-  { value: "top", label: "Align Top", icon: "/assets/align-top.svg" },
+  {
+    value: "right",
+    label: "Align Right",
+    icon: "/assets/align-right.svg",
+  },
+  {
+    value: "top",
+    label: "Align Top",
+    icon: "/assets/align-top.svg",
+  },
   {
     value: "verticalCenter",
     label: "Align Vertical Center",
     icon: "/assets/align-vertical-center.svg",
   },
-  { value: "bottom", label: "Align Bottom", icon: "/assets/align-bottom.svg" },
+  {
+    value: "bottom",
+    label: "Align Bottom",
+    icon: "/assets/align-bottom.svg",
+  },
 ];
 
 export const shortcuts = [
@@ -195,5 +225,32 @@ export const shortcuts = [
     key: "4",
     name: "Reactions",
     shortcut: "E",
+  },
+];
+
+export const REACTIONS = [
+  {
+    emoji: "👍",
+    label: "Thumbs up",
+  },
+  {
+    emoji: "🔥",
+    label: "It's fire!",
+  },
+  {
+    emoji: "😍",
+    label: "Estatic",
+  },
+  {
+    emoji: "👀",
+    label: "Look at that",
+  },
+  {
+    emoji: "😱",
+    label: "whoa",
+  },
+  {
+    emoji: "🙁",
+    label: "Not pleased",
   },
 ];
