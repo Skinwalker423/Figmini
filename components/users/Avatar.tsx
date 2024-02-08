@@ -1,163 +1,33 @@
-import React, { useMemo } from "react";
-import Image from "next/image";
-import classNames from "classnames";
-import { getContrastingColor } from "@/utils/getContrastingColor";
-import styles from "./Avatars.module.css";
-
-type BothProps = {
-  variant?: "avatar" | "more";
-  size?: number;
-  outlineColor?: string;
-  outlineWidth?: number;
-  borderRadius?: number;
-  className?: string;
-  style?: Record<string, string>;
-};
-
-type PictureProps = BothProps & {
-  variant?: "avatar";
-  name?: string;
-  src?: string;
-  color: [string, string];
-  statusColor?: string;
-  count?: never;
-};
-
-type MoreProps = BothProps & {
-  variant: "more";
-  count: number;
-  src?: never;
-  name?: never;
-  statusColor?: never;
-  color?: never;
-};
-
-type AvatarProps = PictureProps | MoreProps;
+import React from "react";
+import styles from "./Avatar.module.css";
 
 /**
- * Can present avatars as gradients with letters, as pictures, or as a count (e.g +3)
- * Size, outline color, color, radius can all be changed, a status circle can be added
+ * This file shows how to add live avatars like you can see them at the top right of a Google Doc or a Figma file.
+ * https://liveblocks.io/docs/examples/live-avatars
+ *
+ * The users avatar and name are not set via the `useMyPresence` hook like the cursors.
+ * They are set from the authentication endpoint.
+ *
+ * See pages/api/liveblocks-auth.ts and https://liveblocks.io/docs/api-reference/liveblocks-node#authorize for more information
  */
+
+const IMAGE_SIZE = 48;
+
 export function Avatar({
-  variant = "avatar",
-  src = "",
-  name = "",
-  color = ["", ""],
-  size = 52,
-  statusColor = "",
-  outlineColor = "",
-  outlineWidth = 3,
-  borderRadius = 9999,
-  className = "",
-  style = {},
-  count = 0,
-}: AvatarProps) {
-  const innerVariant =
-    variant === "avatar" && !src ? "letter" : variant;
-  const realSize = size - outlineWidth * 2;
-
-  return (
-    <div
-      style={{
-        height: realSize,
-        width: realSize,
-        boxShadow: `${outlineColor} 0 0 0 ${outlineWidth}px`,
-        margin: outlineWidth,
-        borderRadius,
-        ...style,
-      }}
-      className={classNames(styles.avatar, className)}
-      data-tooltip={name}
-    >
-      {innerVariant === "more" ? (
-        <MoreCircle
-          count={count}
-          borderRadius={borderRadius}
-        />
-      ) : null}
-
-      {innerVariant === "avatar" ? (
-        <PictureCircle
-          name={name}
-          src={src}
-          size={realSize}
-          borderRadius={borderRadius}
-        />
-      ) : null}
-
-      {innerVariant === "letter" ? (
-        <LetterCircle
-          name={name}
-          color={color}
-          borderRadius={borderRadius}
-        />
-      ) : null}
-
-      {statusColor ? (
-        <span
-          style={{ backgroundColor: statusColor }}
-          className={styles.status}
-        />
-      ) : null}
-    </div>
-  );
-}
-
-function LetterCircle({
+  src,
   name,
-  color,
-  borderRadius,
-}: Pick<PictureProps, "name" | "color" | "borderRadius">) {
-  const textColor = useMemo(
-    () =>
-      color ? getContrastingColor(color[1]) : undefined,
-    [color]
-  );
+}: {
+  src: string;
+  name: string;
+}) {
   return (
-    <div
-      style={{
-        backgroundImage: `linear-gradient(to bottom right, ${color[0]}, ${color[1]})`,
-        borderRadius,
-      }}
-      className={styles.letter}
-    >
-      <div
-        className={styles.letterCharacter}
-        style={{ color: textColor }}
-      >
-        {name ? name.charAt(0) : null}
-      </div>
-    </div>
-  );
-}
-
-function PictureCircle({
-  name,
-  src = "",
-  size,
-  borderRadius,
-}: Pick<
-  PictureProps,
-  "name" | "src" | "size" | "borderRadius"
->) {
-  return (
-    <Image
-      alt={name ?? ""}
-      src={src}
-      height={size}
-      width={size}
-      style={{ borderRadius }}
-    />
-  );
-}
-
-function MoreCircle({
-  count,
-  borderRadius,
-}: Pick<MoreProps, "count" | "borderRadius">) {
-  return (
-    <div style={{ borderRadius }} className={styles.more}>
-      +{count}
+    <div className={styles.avatar} data-tooltip={name}>
+      <img
+        src={src}
+        height={IMAGE_SIZE}
+        width={IMAGE_SIZE}
+        className={styles.avatar_picture}
+      />
     </div>
   );
 }
