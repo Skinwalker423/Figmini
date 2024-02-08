@@ -131,7 +131,10 @@ const Live = () => {
         setCursorState({
           mode: CursorMode.Hidden,
         });
-      } else if (e.key === "e") {
+      } else if (
+        e.key === "e" &&
+        cursorState.mode !== CursorMode.Chat
+      ) {
         setCursorState({
           mode: CursorMode.ReactionSelector,
         });
@@ -150,7 +153,7 @@ const Live = () => {
       window.removeEventListener("keyup", onKeyUp);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [updateMyPresence]);
+  }, [updateMyPresence, cursorState.mode]);
 
   useEventListener((eventData) => {
     const event = eventData.event as ReactionEvent;
