@@ -131,10 +131,7 @@ const Live = () => {
         setCursorState({
           mode: CursorMode.Hidden,
         });
-      } else if (
-        e.key === "e" &&
-        cursorState.mode !== CursorMode.Chat
-      ) {
+      } else if (e.key === "e") {
         setCursorState({
           mode: CursorMode.ReactionSelector,
         });
@@ -213,11 +210,6 @@ const Live = () => {
               setReaction={setReactionsOptimized}
             />
           )}
-          {/* {cursorState.mode === CursorMode.Reaction && (
-            <div className='pointer-events-none absolute top-3.5 left-1 select-none'>
-              {cursorState.reaction}
-            </div>
-          )} */}
         </>
       )}
       <LiveCursors others={others} />
