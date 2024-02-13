@@ -19,7 +19,7 @@ export default function Home() {
   const fabricRef = useRef<fabric.Canvas | null>(null);
   const isDrawing = useRef(false);
   const shapeRef = useRef<fabric.Object | null>(null);
-  const selectedShapeRef = useRef<string | null>(null);
+  const selectedShapeRef = useRef<string | null>("circle");
 
   useEffect(() => {
     const canvas = initializeFabric({
@@ -47,7 +47,7 @@ export default function Home() {
       <Navbar />
       <section className='flex h-full flex-row'>
         <LeftSidebar />
-        <Live />
+        <Live canvasRef={canvasRef} />
         <RightSidebar />
       </section>
     </main>

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   useMyPresence,
   useOthers,
@@ -17,7 +19,11 @@ import useInterval from "@/hooks/useInterval";
 import ReactionSelector from "./reaction/ReactionSelector";
 import FlyingReaction from "./reaction/FlyingReaction";
 
-const Live = () => {
+type Props = {
+  canvasRef: React.RefObject<HTMLCanvasElement> | null;
+};
+
+const Live = ({ canvasRef }: Props) => {
   const others = useOthers();
   const broadcast = useBroadcastEvent();
   const [{ cursor }, updateMyPresence] =
@@ -178,6 +184,7 @@ const Live = () => {
 
   return (
     <div
+      id='canvas'
       className='h-[100vh] w-full flex justify-center items-center text-center'
       onPointerMove={handlePointerMove}
       onPointerDown={handlePointerDown}
@@ -185,6 +192,7 @@ const Live = () => {
       onPointerUp={handleOnPointerUp}
     >
       <h1 className='text-2xl text-white'>Figmini</h1>;
+      <canvas ref={canvasRef}></canvas>
       {reactions.map((reaction) => {
         return (
           <FlyingReaction
