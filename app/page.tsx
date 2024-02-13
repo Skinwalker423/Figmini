@@ -2,7 +2,12 @@
 
 import { fabric } from "fabric";
 
-import { useEffect, useRef } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import LeftSidebar from "@/components/LeftSidebar";
 import Live from "@/components/Live";
@@ -13,13 +18,32 @@ import {
   handleResize,
   initializeFabric,
 } from "@/lib/canvas";
+import { ActiveElement } from "@/types/type";
 
 export default function Home() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<fabric.Canvas | null>(null);
   const isDrawing = useRef(false);
   const shapeRef = useRef<fabric.Object | null>(null);
+  const imageInputRef = useRef<HTMLInputElement | null>(
+    null
+  );
   const selectedShapeRef = useRef<string | null>("circle");
+
+  const [activeElement, setActiveElement] =
+    useState<ActiveElement>({
+      name: "",
+      value: "",
+      icon: "",
+    });
+
+  const handleActiveElement = (element: ActiveElement) => {
+    setActiveElement(element);
+  };
+
+  const handleImageUpload = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {};
 
   useEffect(() => {
     const canvas = initializeFabric({
@@ -44,9 +68,14 @@ export default function Home() {
 
   return (
     <main className='h-screen overflow-hidden'>
-      <Navbar />
+      <Navbar
+        activeElement={activeElement}
+        handleActiveElement={handleActiveElement}
+        imageInputRef={imageInputRef}
+        handleImageUpload={handleImageUpload}
+      />
       <section className='flex h-full flex-row'>
-        <LeftSidebar />
+        <LeftSidebar allShapes={[]} />
         <Live canvasRef={canvasRef} />
         <RightSidebar />
       </section>

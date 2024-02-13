@@ -11,7 +11,12 @@ import { ActiveUsers } from "./users/ActiveUsers";
 import { NewThread } from "./comments/NewThread";
 import { Button } from "./ui/button";
 
-const Navbar = ({ activeElement }: NavbarProps) => {
+const Navbar = ({
+  activeElement,
+  handleActiveElement,
+  handleImageUpload,
+  imageInputRef,
+}: NavbarProps) => {
   const isActive = (value: string | Array<ActiveElement>) =>
     (activeElement && activeElement.value === value) ||
     (Array.isArray(value) &&
@@ -35,6 +40,9 @@ const Navbar = ({ activeElement }: NavbarProps) => {
                 <ShapesMenu
                   item={item}
                   activeElement={isActive}
+                  handleActiveElement={handleActiveElement}
+                  imageInputRef={imageInputRef}
+                  handleImageUpload={handleImageUpload}
                 />
               ) : item.value === "comments" ? (
                 <NewThread>{item.value}</NewThread>
