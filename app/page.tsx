@@ -28,7 +28,9 @@ export default function Home() {
   const imageInputRef = useRef<HTMLInputElement | null>(
     null
   );
-  const selectedShapeRef = useRef<string | null>("circle");
+  const selectedShapeRef = useRef<string | null>(
+    "triangle"
+  );
 
   const [activeElement, setActiveElement] =
     useState<ActiveElement>({
@@ -39,6 +41,7 @@ export default function Home() {
 
   const handleActiveElement = (element: ActiveElement) => {
     setActiveElement(element);
+    selectedShapeRef.current = element?.value || null;
   };
 
   const handleImageUpload = (
@@ -62,7 +65,7 @@ export default function Home() {
     });
 
     window.addEventListener("resize", () => {
-      handleResize({ canvas });
+      handleResize({ canvas: fabricRef.current });
     });
   }, []);
 

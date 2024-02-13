@@ -62,11 +62,11 @@ const ShapesMenu = ({
                   alt={elem?.name as string}
                   width={20}
                   height={20}
-                  className={
+                  className={`object-contain w-auto h-6 ${
                     activeElement.value === elem?.value
                       ? "invert"
                       : ""
-                  }
+                  }`}
                 />
                 <p
                   className={`text-sm  ${
